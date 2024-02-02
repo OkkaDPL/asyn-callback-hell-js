@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const token = ~~(Math.random()*12345678);
+        const pictures = ["1.jpg", "2.jpg", "3.jpg"];
+
+        // Generate data
+        const doLogin = (username, callback)=>{
+            console.log("2 sec to get token...");
+            setTimeout(() => {
+                callback({username, token });
+            }, 2000);
+        }
+
+        const getUser = (token, callback)=>{
+            if(token){
+                console.log("1 sec to get api...");
+                setTimeout(() => {
+                    callback({apiKey:"xxKey123"});
+                }, 1000);
+            }
+        }
+
+        const getPictures = (apiKey, callback)=>{
+            if(apiKey){
+                console.log("3 sec to get pictures...");
+                setTimeout(() => {
+                    callback(pictures);
+                }, 3000);
+            }
+        }
+        // End generate data
+
+        // Processing to get data
+        const getToken = doLogin("Okkadpl", (response)=>{
+            const {token:valToken} = response;
+            console.log('your token =>', valToken);
+
+            const getApiKey = getUser(valToken, (response)=>{
+                const {apiKey:valApiKey} = response;
+                console.log(`Your apiKey =>`, valApiKey);
+                
+                const getData = getPictures(valApiKey, (response)=>{
+                    console.log('your pictures =>', response);
+                });
+            });
+        });
+        // End processing
+    </script>
+</body>
+</html>
